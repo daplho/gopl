@@ -21,6 +21,8 @@ func main() {
 			os.Exit(1)
 		}
 
+		fmt.Printf("HTTP status code: %s\n", resp.Status)
+
 		_, err = io.Copy(os.Stdout, resp.Body)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "fetch: reading %s: %v\n", url, err)
