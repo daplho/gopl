@@ -54,13 +54,14 @@ func corner(i, j int) (outX float64, outY float64, ok bool) {
 	// Compute suface height z.
 	z, ok := f(x, y)
 	if !ok {
-		return 0.0, 0.0, false
+		return
 	}
 
 	// Project (x,y,z) isometrically onto 2-D SVG canvas (sx,sy).
-	sx := width/2 + (x-y)*cos30*xyscale
-	sy := height/2 + (x+y)*sin30*xyscale - z*zscale
-	return sx, sy, true
+	outX = width/2 + (x-y)*cos30*xyscale
+	outY = height/2 + (x+y)*sin30*xyscale - z*zscale
+	ok = true
+	return
 }
 
 func f(x, y float64) (value float64, ok bool) {
