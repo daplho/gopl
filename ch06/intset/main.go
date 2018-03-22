@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	var x, y IntSet
+	var x, y, z IntSet
 	x.Add(1)
 	x.Add(144)
 	x.Add(9)
@@ -21,12 +21,14 @@ func main() {
 	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{1 9 42 144}:4"
 	fmt.Println(x.Has(9), x.Has(123))          // "true false"
 
+	z = *x.Copy()
 	x.Remove(9)
 	x.Remove(100)
 	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{1 42 144}:3"
 
 	x.Clear()
-	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{}:0}
+	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{}:0"
+	fmt.Printf("%s:%d\n", z.String(), z.Len()) // "{1 9 42 144}:4"
 }
 
 // An IntSet is a set of small non-negative integers.
@@ -49,6 +51,14 @@ func (s *IntSet) Clear() {
 	for i, _ := range s.words {
 		s.words[i] = 0
 	}
+}
+
+// Copy returns a copy of the set.
+func (s *IntSet) Copy() *IntSet {
+	newIntSet := new(IntSet)
+	newIntSet.words = make([]uint64, len(s.words))
+	copy(newIntSet.words, s.words)
+	return newIntSet
 }
 
 // Has reports whether the set contains the non-negative value x.
