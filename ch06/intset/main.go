@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"math/bits"
 )
 
 func main() {
@@ -10,14 +11,14 @@ func main() {
 	x.Add(1)
 	x.Add(144)
 	x.Add(9)
-	fmt.Println(x.String()) // "{1 9 144}"
+	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{1 9 144}:3"
 
 	y.Add(9)
 	y.Add(42)
-	fmt.Println(y.String()) // "{9 42}"
+	fmt.Printf("%s:%d\n", y.String(), y.Len()) // "{9 42}:2"
 
 	x.UnionWith(&y)
-	fmt.Println(x.String()) // "{1 9 42 144}"
+	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{1 9 42 144}:4"
 
 	fmt.Println(x.Has(9), x.Has(123)) // "true false"
 }
@@ -26,12 +27,6 @@ func main() {
 // Its zero value represents the empty set.
 type IntSet struct {
 	words []uint64
-}
-
-// Has reports whether the set contains the non-negative value x.
-func (s *IntSet) Has(x int) bool {
-	word, bit := x/64, uint(x%64)
-	return word < len(s.words) && s.words[word]&(1<<bit) != 0
 }
 
 // Add adds the non-negative value x to the set.
@@ -43,15 +38,19 @@ func (s *IntSet) Add(x int) {
 	s.words[word] |= 1 << bit
 }
 
-// UnionWith sets s to the union of s and t.
-func (s *IntSet) UnionWith(t *IntSet) {
-	for i, tword := range t.words {
-		if i < len(s.words) {
-			s.words[i] |= tword
-		} else {
-			s.words = append(s.words, tword)
-		}
+// Has reports whether the set contains the non-negative value x.
+func (s *IntSet) Has(x int) bool {
+	word, bit := x/64, uint(x%64)
+	return word < len(s.words) && s.words[word]&(1<<bit) != 0
+}
+
+// Len returns the number of elements in the set.
+func (s *IntSet) Len() int {
+	len := 0
+	for _, word := range s.words {
+		len += bits.OnesCount64(word)
 	}
+	return len
 }
 
 // String returns the set as a string of the form "{1 2 3}".
@@ -73,4 +72,15 @@ func (s *IntSet) String() string {
 	}
 	buf.WriteByte('}')
 	return buf.String()
+}
+
+// UnionWith sets s to the union of s and t.
+func (s *IntSet) UnionWith(t *IntSet) {
+	for i, tword := range t.words {
+		if i < len(s.words) {
+			s.words[i] |= tword
+		} else {
+			s.words = append(s.words, tword)
+		}
+	}
 }
