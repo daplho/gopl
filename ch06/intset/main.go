@@ -20,6 +20,10 @@ func main() {
 	x.UnionWith(&y)
 	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{1 9 42 144}:4"
 
+	x.Remove(9)
+	x.Remove(100)
+	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{1 42 144}:3"
+
 	fmt.Println(x.Has(9), x.Has(123)) // "true false"
 }
 
@@ -51,6 +55,14 @@ func (s *IntSet) Len() int {
 		len += bits.OnesCount64(word)
 	}
 	return len
+}
+
+// Remove removes the non-negative value x from the set.
+func (s *IntSet) Remove(x int) {
+	word, bit := x/64, uint(x%64)
+	if word < len(s.words) {
+		s.words[word] &= ^(1 << bit)
+	}
 }
 
 // String returns the set as a string of the form "{1 2 3}".
