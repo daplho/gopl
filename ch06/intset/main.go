@@ -19,12 +19,14 @@ func main() {
 
 	x.UnionWith(&y)
 	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{1 9 42 144}:4"
+	fmt.Println(x.Has(9), x.Has(123))          // "true false"
 
 	x.Remove(9)
 	x.Remove(100)
 	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{1 42 144}:3"
 
-	fmt.Println(x.Has(9), x.Has(123)) // "true false"
+	x.Clear()
+	fmt.Printf("%s:%d\n", x.String(), x.Len()) // "{}:0}
 }
 
 // An IntSet is a set of small non-negative integers.
@@ -40,6 +42,13 @@ func (s *IntSet) Add(x int) {
 		s.words = append(s.words, 0)
 	}
 	s.words[word] |= 1 << bit
+}
+
+// Clear removes all elements from the set.
+func (s *IntSet) Clear() {
+	for i, _ := range s.words {
+		s.words[i] = 0
+	}
 }
 
 // Has reports whether the set contains the non-negative value x.
