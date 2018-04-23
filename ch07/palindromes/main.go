@@ -12,20 +12,21 @@ func (x pslice) Less(i, j int) bool { return x[i] < x[j] }
 func (x pslice) Swap(i, j int)      { x[i], x[j] = x[j], x[i] }
 
 func IsPalindrome(s sort.Interface) bool {
-	isPalindrome := false
+	isPalindrome := true
 	for i, j := 0, s.Len()-1; i > j; i, j = i+1, j-1 {
 		if !s.Less(i, j) && !s.Less(j, i) {
 			continue
+		} else {
+			isPalindrome = false
+			break
 		}
-		isPalindrome = true
-		break
 	}
 
 	return isPalindrome
 }
 
 func main() {
-	var words = []string{"roots", "smash", "smash", "roots"}
+	var words = []string{"roots", "smash", "smash", "roots", "tree"}
 	pwords := pslice(words)
 	// 	sort.Sort(pwords)
 	// 	fmt.Printf("%v\n", pwords)
