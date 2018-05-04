@@ -20,7 +20,6 @@ func main() {
 	fmt.Printf("os.Stdout's type is %T\n", x)
 
 	// possibility 1: asserted type `T` is a concrete type
-	// (`*os.File` and `*bytes.Buffer` respectively below)
 	if f, ok := x.(*os.File); ok {
 		fmt.Println("success: f == os.Stdout")
 		fmt.Printf("os.Stdout's name is %s\n", f.Name())
