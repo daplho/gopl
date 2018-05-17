@@ -14,12 +14,14 @@ func main() {
 	}
 	done := make(chan struct{})
 	go func() {
-		io.Copy(os.Stdout, conn) // NOTE: ignoring errors
+		if _, err := io.Copy(os.Stdout, conn); err != nil {
+			log.Fatal(err)
+		}
 		log.Println("done")
 		done <- struct{}{} // signal the main goroutine
 	}()
 	mustCopy(conn, os.Stdin)
-	conn.Close()
+	conn.(*net.TCPConn).CloseWrite()
 	<-done // wait for background goroutine to finish
 }
 
