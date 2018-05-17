@@ -8,7 +8,7 @@ func main() {
 
 	// Counter
 	go func() {
-		for x := 0; x < 1000000; x++ {
+		for x := 0; x < 100; x++ {
 			naturals <- x
 		}
 		close(naturals)
