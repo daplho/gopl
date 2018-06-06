@@ -1,9 +1,7 @@
-// Crawl1 crawls web links starting with command-line arguments.
+// Crawl2 crawls web links starting with command-line arguments.
 //
-// This version quickly exhausts available file descriptors
-// due to excessive concurrent calls to links.Extract.
-//
-// Also, it never terminates because the worklist is never closed.
+// This version uses a buffered channel as a counting semaphore
+// to limit the number of concurrent calls to link.Extract.
 package main
 
 import (
