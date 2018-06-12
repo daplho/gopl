@@ -1,3 +1,4 @@
+// Countdown implements the countdown of a rocket launch.
 package main
 
 import (
