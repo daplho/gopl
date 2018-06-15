@@ -15,13 +15,14 @@ func main() {
 	}()
 
 	fmt.Println("Commencing countdown. Press return to abort.")
-	tick := time.Tick(1 * time.Second)
+	ticker := time.NewTicker(1 * time.Second)
 	for countdown := 10; countdown > 0; countdown-- {
 		fmt.Println(countdown)
 		select {
-		case <-tick:
+		case <-ticker.C:
 			// Do nothing.
 		case <-abort:
+			ticker.Stop()
 			fmt.Println("Launch aborted!")
 			return
 		}
