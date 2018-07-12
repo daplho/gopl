@@ -29,11 +29,11 @@ func broadcaster() {
 				cli.out <- msg
 			}
 		case cli := <-entering:
-			clients[cli] = true
 			cli.out <- "current clients list: "
 			for c := range clients {
 				cli.out <- c.name
 			}
+			clients[cli] = true
 
 		case cli := <-leaving:
 			delete(clients, cli)
