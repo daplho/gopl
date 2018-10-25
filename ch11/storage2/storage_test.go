@@ -6,6 +6,11 @@ import (
 )
 
 func TestQuotaNotifiesUser(t *testing.T) {
+	// Save and restore original notifyUser.
+	saved := notifyUser
+	defer func() { notifyUser = saved }()
+
+	// Install the test's fake notifyUser.
 	var notifiedUser, notifiedMsg string
 	notifyUser = func(user, msg string) {
 		notifiedUser, notifiedMsg = user, msg
