@@ -1,7 +1,9 @@
 package display
 
 import (
-	_ "testing"
+	"os"
+	"reflect"
+	"testing"
 )
 
 func Example_movie() {
@@ -36,4 +38,28 @@ func Example_movie() {
 	}
 
 	Display("strangelove", strangelove)
+}
+
+func Example_interface() {
+	var i interface{} = 3
+	Display("i", i)
+	// Output:
+	// Display i (int):
+	// i = 3
+}
+
+func Example_ptrToInterface2() {
+	var i interface{} = 3
+	Display("&i", &i)
+	// Output:
+	// Display &i (*interface {}):
+	// (*&i).type = int
+	// (*&i).value = 3
+}
+
+func Test(t *testing.T) {
+	Display("os.Stderr", os.Stderr)
+
+	// Even metarecursion! (YMMV)
+	Display("rv", reflect.ValueOf(os.Stderr))
 }
