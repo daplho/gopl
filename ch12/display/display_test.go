@@ -63,3 +63,10 @@ func Test(t *testing.T) {
 	// Even metarecursion! (YMMV)
 	Display("rv", reflect.ValueOf(os.Stderr))
 }
+
+func TestExampleOutput(t *testing.T) {
+	if !testing.Verbose() {
+		return
+	}
+	Example_movie()
+}
