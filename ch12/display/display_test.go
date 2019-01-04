@@ -69,4 +69,6 @@ func TestExampleOutput(t *testing.T) {
 		return
 	}
 	Example_movie()
+	Example_interface()
+	Example_ptrToInterface2()
 }
