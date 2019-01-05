@@ -1,6 +1,9 @@
 package sexpr
 
-import "testing"
+import (
+	"reflect"
+	"testing"
+)
 
 // Test verifies that encoding and decoding a complex data value
 // produces an equal result.
@@ -47,4 +50,16 @@ func Test(t *testing.T) {
 		t.Fatalf("Marshal failed: %v", err)
 	}
 	t.Logf("Marshal() = %s\n", data)
+
+	// Decode it
+	var movie Movie
+	if err := Unmarshal(data, &movie); err != nil {
+		t.Fatalf("Unmarshal failed: %v", err)
+	}
+	t.Logf("Unmarshal() = %+v\n", movie)
+
+	// Check equality.
+	if !reflect.DeepEqual(movie, strangelove) {
+		t.Fatal("not equal")
+	}
 }
